@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Landing App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+    }
+
+    .container {
+      width: 400px;
+      margin: 0 auto;
+      padding: 40px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    input[type="submit"] {
+      background-color: #333;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #555;
+    }
+
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Sign up for our Newsletter</h1>
+    <form id="signupForm">
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required>
+
+      <input type="submit" value="Sign Up">
+    </form>
+    <div id="message"></div>
+  </div>
+
+  <script>
+    document.getElementById("signupForm").addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent form submission
+
+      // Get form values
+      var nameInput = document.getElementById("name");
+      var emailInput = document.getElementById("email");
+
+      // Validate form inputs
+      var name = nameInput.value.trim();
+      var email = emailInput.value.trim();
+      var isValid = true;
+
+      if (name === "") {
+        displayErrorMessage(nameInput, "Name is required");
+        isValid = false;
+      } else {
+        removeErrorMessage(nameInput);
+      }
+
+      if (email === "") {
+        displayErrorMessage(emailInput, "Email is required");
+        isValid = false;
+      } else if (!isValidEmail(email)) {
+        displayErrorMessage(emailInput, "Invalid email format");
+        isValid = false;
+      } else {
+        removeErrorMessage(emailInput);
+      }
+
+      // Submit form if valid
+      if (isValid) {
+        // You can perform further actions here, such as sending data to a server
+        showMessage("Form submitted successfully");
+        resetForm();
+      }
+    });
+
+    function displayErrorMessage(inputElement, message) {
+      var errorElement = document.createElement("span");
+      errorElement.className = "error";
+      errorElement.textContent = message;
+      inputElement.classList.add("error");
+      inputElement.parentNode.insertBefore(errorElement, inputElement.nextSibling);
+    }
+
+    function removeErrorMessage(inputElement) {
+      var errorElement = inputElement.nextElementSibling;
+      if (errorElement && errorElement.classList.contains("error")) {
+        inputElement.classList.remove("error");
+        errorElement.parentNode.removeChild(errorElement);
+      }
+    }
